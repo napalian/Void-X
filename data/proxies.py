@@ -4,7 +4,8 @@ import asyncio
 class Proxy:
     def __init__(self) -> None:
         self.proxies = []
-
+    
+    @staticmethod
     async def proxy_gen(self):
         async with aiohttp.ClientSession() as session:
             async with session.get("https://api.proxyscrape.com/v2/?request=getproxies&protocol=http&timeout=50&country=all") as resp:
@@ -15,6 +16,7 @@ class Proxy:
                     for proxy in proxies:
                         f.write("http://{}\n".format(proxy))
 
+    @staticmethod
     async def proxy_check(self) -> str:
         with open("proxies.txt", "r") as proxies_file, open("working_proxies.txt", "w+") as working_file:
             proxies = proxies_file.read().split()
