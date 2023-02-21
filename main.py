@@ -41,7 +41,7 @@ class Features:
 
     async def checker():
 
-        bot_token = 'MTA3NzY3NjI0MjE0NjQzMTA1Nw.GvIRcS.ePCydnsyCQiSUqBMRPPk-YIGmzDnIwC1VMIkDQ'#Write.Input("\n\nToken >> ",Colors.purple_to_blue,interval=0.000)
+        bot_token = 'tsting.'#Write.Input("\n\nToken >> ",Colors.purple_to_blue,interval=0.000)
         guild_id = 1077675203301224468#Write.Input("\n\nGuild ID >> ", Colors.purple_to_blue, interval=0.000)
 
         await Features.fetch_guild_data({"Authorization":"Bot {}".format(bot_token)},guild_id)
