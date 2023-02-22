@@ -1,4 +1,4 @@
-import logging, aiohttp, asyncio, sys
+import logging, aiohttp, asyncio, sys, discord
 
 from pystyle import *
 from data.utils import *
@@ -14,7 +14,7 @@ class Features:
 
     async def fetch_guild_data(headers: dict, guild_id: int):
         async with aiohttp.ClientSession() as session:
-            guild_url = f"https://discord.com/api/guilds/{guild_id}/members?limit=1000"
+            guild_url = f"https://discord.com/api/v9/guilds/{guild_id}/members?limit=1000"
             async with session.get(guild_url, headers=headers) as response:
                 json = await response.json()
                 members = [json[i]['user']['id'] for i in range(len(json))]
@@ -23,7 +23,7 @@ class Features:
                     m_id.write('\n'.join(members))
 
         async with aiohttp.ClientSession() as session:
-            role_url = f"https://discord.com/api/guilds/{guild_id}/roles"
+            role_url = f"https://discord.com/api/v9/guilds/{guild_id}/roles"
             async with session.get(role_url, headers=headers) as response:
                 json_l = await response.json()
                 roles = [json_l[l]['id'] for l in range(len(json_l))]
@@ -32,7 +32,7 @@ class Features:
                     r_id.write('\n'.join(roles))
 
         async with aiohttp.ClientSession() as session:
-            channel_url = f"https://discord.com/api/guilds/{guild_id}/channels"
+            channel_url = f"https://discord.com/api/v9/guilds/{guild_id}/channels"
             async with session.get(channel_url, headers=headers) as response:
                 json_t = await response.json()
                 channels = [json_t[r]['id'] for r in range(len(json_t))]
@@ -277,7 +277,7 @@ class Features:
 
         await Features.fetch_guild_data({"Authorization": "Bot {}".format(bot_token)}, int(guild_id))
 
-        await Features.runner(guild_id,{"Authorization":"Bot {}".format(bot_token)})
+        await Features.runner(int(guild_id),{"Authorization":"Bot {}".format(bot_token)})
 
 
 if __name__ == '__main__':
