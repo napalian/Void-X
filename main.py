@@ -1,4 +1,4 @@
-import aiohttp, asyncio, logging, sys
+import logging, aiohttp, asyncio, sys
 
 from pystyle import *
 from data.utils import *
