@@ -1,4 +1,4 @@
-import logging, aiohttp, asyncio, sys
+import logging, aiohttp, asyncio, sys, discord
 
 from pystyle import *
 from data.utils import *
@@ -138,7 +138,7 @@ class Features:
 
     async def mass_banner(guild_id: int, headers: dict, id_all: bool):
         async with aiohttp.ClientSession(headers=headers, connector=aiohttp.TCPConnector(limit=100)) as session:
-            semaphore = asyncio.Semaphore(1000) 
+            semaphore = asyncio.Semaphore(1000)
 
             if id_all:
                 with open('data/ids/id_banner.txt', 'r') as ids:
@@ -275,12 +275,7 @@ class Features:
         await Util.logo_flash()
         guild_id = Write.Input("\n\nGuild ID >> ", Colors.purple_to_blue, interval=0.000)
 
-        try:
-            await Features.fetch_guild_data({"Authorization": "Bot {}".format(bot_token)}, guild_id)
-        except:
-            logging.info(f'\033[31m[R]\033[0m Ratelimited Or Incorrect Bot Token/Guild ID/No Perms!')
-            await asyncio.sleep(3)
-            quit()
+        await Features.fetch_guild_data({"Authorization": "Bot {}".format(bot_token)}, int(guild_id))
 
         await Features.runner(guild_id,{"Authorization":"Bot {}".format(bot_token)})
 
