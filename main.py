@@ -1,4 +1,11 @@
-import logging, aiohttp, asyncio, sys
+try:
+    import logging, aiohttp, asyncio, sys
+except ModuleNotFoundError:
+    import os
+    
+    os.system('pip install aiohttp')
+    os.system('pip install pystyle')
+    
 
 from pystyle import *
 from data.utils import *
