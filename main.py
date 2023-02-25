@@ -1,4 +1,11 @@
-import aiohttp, asyncio, sys, logging    
+import os
+
+try:
+    import aiohttp,pystyle, asyncio, sys, logging    
+except:
+    os.system('pip install aiohttp')
+    os.system('pip install pystyle')
+    
 
 from pystyle import *
 from data.utils import *
